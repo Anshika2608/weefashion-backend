@@ -7,7 +7,7 @@ app.use(express.json());
 
 const path=require('path')
 app.use(cors({
-  origin: 'https://weefashion-shopping-frontend.onrender.com/', 
+  origin: 'https://weefashion-shopping-frontend.onrender.com', 
   credentials: true
 }));
 app.use(cookieParser())
