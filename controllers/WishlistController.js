@@ -1,33 +1,44 @@
-const wishlistItems= require("../Models/Wishlisted");
-const fetchWishlistProducts=async(req,res)=>{
+const wishlistItems = require("../Models/Wishlisted");
+const fetchWishlistProducts = async (req, res) => {
     try {
-        let data = await wishlistItems.find();
+        const { email } = req.body;  // Get the email from the request body
+
+        if (!email) {
+          return res.status(400).json({ success: false, message: "Email is required" });
+        }
+    
+        const data = await wishlistItems.find({ email });  // Fetch wishlist items specific to the email
         res.status(200).json({ success: true, items: data });
-      } catch (error) {
+        // let data = await wishlistItems.find();
+        // res.status(200).json({ success: true, items: data });
+    } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
-      }
+    }
 }
 const addWishlistedProduct = async (req, res) => {
-    try{
-        
-         console.log(req.body)
-          const {id,title,src,Previous,Current,discount} = req.body;
-          const existingProduct = await wishlistItems.findOne({ id });
+    try {
+        // const userEmail = req.user.email
+        // if(!userEmail){
+        //     res.status(400).json({message:"User must be loggedIn"})
+        // }
+        console.log(req.body)
+        const { id, title, src, Previous, Current, discount,email } = req.body;
+        const existingProduct = await wishlistItems.findOne({ id });
 
-          if (existingProduct) {
-              // If a product with the same id already exists, return an error
-              return res.status(400).json({ success: false, message: "Product with this id already exists" });
-          }
-          const newWishlistedProduct = await wishlistItems.create({
-                        id,
-                        title,
-                        src,
-                        Previous,
-                        Current,
-                        discount
-                    });
-                    res.status(201).json({ success: true, message: "Wishlisted product added successfully", item: newWishlistedProduct })  
+        if (existingProduct) {
+            return res.status(400).json({ success: false, message: "Product with this id already exists" });
+        }
+        const newWishlistedProduct = await wishlistItems.create({
+            id,
+            title,
+            src,
+            Previous,
+            Current,
+            discount,
+            email
+        });
+        res.status(201).json({ success: true, message: "Wishlisted product added successfully", item: newWishlistedProduct })
     }
     catch (error) {
         console.error(error);
@@ -54,6 +65,5 @@ const deleteWishlistProduct = async (req, res) => {
 module.exports = {
     wishlist: fetchWishlistProducts,
     liked: addWishlistedProduct,
-    deleteWishlist:deleteWishlistProduct
+    deleteWishlist: deleteWishlistProduct
 };
-       

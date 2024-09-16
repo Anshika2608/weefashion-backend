@@ -6,6 +6,10 @@ const wishlistSchema=new mongoose.Schema({
     src:String, 
     Previous:Number,
     Current:Number,
-    discount:String
+    discount:String,
+    email:{
+        type:String,
+        required:true
+    }
 });
 module.exports=mongoose.model('wishlistItems',wishlistSchema)
