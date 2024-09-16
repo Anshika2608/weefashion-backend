@@ -8,6 +8,6 @@ const cartSchema=new mongoose.Schema({
     Current:Number,
     discount:String,
     quantity:Number,
-    Category:String,
+    Category:String
 });
 module.exports=mongoose.model('Cartproducts',cartSchema)
