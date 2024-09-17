@@ -45,7 +45,12 @@ const addWishlistedProduct = async (req, res) => {
 
 const deleteWishlistProduct = async (req, res) => {
     try {
-        const product = await wishlistItems.findOneAndDelete({ id: req.params.id });
+        const { email } = req.query; 
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
+        const product = await wishlistItems.findOneAndDelete({ id: req.params.id, email  });
         if (!product) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
