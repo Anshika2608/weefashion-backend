@@ -18,13 +18,10 @@ const fetchWishlistProducts = async (req, res) => {
 }
 const addWishlistedProduct = async (req, res) => {
     try {
-        // const userEmail = req.user.email
-        // if(!userEmail){
-        //     res.status(400).json({message:"User must be loggedIn"})
-        // }
+       
         console.log(req.body)
         const { id, title, src, Previous, Current, discount,email } = req.body;
-        const existingProduct = await wishlistItems.findOne({ id });
+        const existingProduct = await wishlistItems.findOne({ id,email });
 
         if (existingProduct) {
             return res.status(400).json({ success: false, message: "Product with this id already exists" });
