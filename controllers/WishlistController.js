@@ -1,13 +1,13 @@
 const wishlistItems = require("../Models/Wishlisted");
 const fetchWishlistProducts = async (req, res) => {
     try {
-        const { email } = req.body;  // Get the email from the request body
+        const { email } = req.query; 
 
         if (!email) {
           return res.status(400).json({ success: false, message: "Email is required" });
         }
     
-        const data = await wishlistItems.find({ email });  // Fetch wishlist items specific to the email
+        const data = await wishlistItems.find({ email });  
         res.status(200).json({ success: true, items: data });
         // let data = await wishlistItems.find();
         // res.status(200).json({ success: true, items: data });
