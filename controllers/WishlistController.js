@@ -9,8 +9,7 @@ const fetchWishlistProducts = async (req, res) => {
     
         const data = await wishlistItems.find({ email });  
         res.status(200).json({ success: true, items: data });
-        // let data = await wishlistItems.find();
-        // res.status(200).json({ success: true, items: data });
+        
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

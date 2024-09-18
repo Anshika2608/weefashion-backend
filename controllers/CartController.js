@@ -1,7 +1,12 @@
 const Cartproducts= require("../Models/Cart");
 const fetchCartProducts=async(req,res)=>{
     try {
-        let data = await Cartproducts.find();
+        const { email } = req.query; 
+
+        if (!email) {
+          return res.status(400).json({ success: false, message: "Email is required" });
+        } 
+        let data = await Cartproducts.find({email});
         res.status(200).json({ success: true, items: data });
       } catch (error) {
         console.error(error);
@@ -12,8 +17,8 @@ const addCartProduct = async (req, res) => {
     try{
         
          console.log(req.body)
-          const {id,title,src,Previous,Current,discount,quantity} = req.body;
-          const existingProduct = await Cartproducts.findOne({ id });
+          const {id,title,src,Previous,Current,discount,quantity,email} = req.body;
+          const existingProduct = await Cartproducts.findOne({ id ,email});
 
           if (existingProduct) {
               // If a product with the same id already exists, return an error
@@ -26,7 +31,8 @@ const addCartProduct = async (req, res) => {
                         Previous,
                         Current,
                         discount,
-                        quantity
+                        quantity,
+                        email
                     });
                     res.status(201).json({ success: true, message: "Cart product added successfully", item: newCartProduct })  
     }
@@ -37,7 +43,12 @@ const addCartProduct = async (req, res) => {
 }
 const deleteCartProduct = async (req, res) => {
     try {
-        const product = await Cartproducts.findOneAndDelete({ id: req.params.id });
+        const { email } = req.query; 
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
+        const product = await Cartproducts.findOneAndDelete({ id: req.params.id,email });
         if (!product) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
