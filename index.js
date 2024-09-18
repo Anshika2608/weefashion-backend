@@ -25,6 +25,7 @@ app.use("/api/changePassword",require("./routes/Authenticationroutes"))
 app.use("/api/change",require("./routes/Authenticationroutes"))
 app.use("/api/verifyForgot",require("./routes/Authenticationroutes"))
 app.use("/api/cart",require("./routes/CartRoutes"))
+app.use("/order",require("./routes/OrderPlaceRoutes"))
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
