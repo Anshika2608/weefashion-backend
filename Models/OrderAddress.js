@@ -8,7 +8,7 @@ const addressSchema=new mongoose.Schema({
           return uuidv4().split('-')[0]; 
         },
       },
-   firstName:{
+   fname:{
       type:String,
       required:true,
       validate: {
@@ -18,7 +18,7 @@ const addressSchema=new mongoose.Schema({
         message: 'Last name must only contain letters (A-Z or a-z) and be 2-50 characters long',
       },
    },
-   lastName:{
+   lname:{
     type:String,
     required:true,
     validate: {
