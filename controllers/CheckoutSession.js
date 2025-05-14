@@ -1,7 +1,6 @@
 const Cart = require("../Models/Cart");
 const Address = require("../Models/OrderAddress");
-const Stripe = require("stripe");
-const stripe = Stripe("pk_test_51Q1VhFGOB3MpsHa68zznQZ0fFGismuEKdshdpW5p7S8tp4TlDcXSw9f2CJCU1nf5iFKboHogRNoLdqDQCoz8z9Ph00WvENZnwB"); // Replace with your Stripe secret key
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // Replace with your Stripe secret key
 
 const createCheckoutSession = async (req, res) => {
   const { email } = req.body;
@@ -44,8 +43,8 @@ const createCheckoutSession = async (req, res) => {
       mode: "payment",
       customer_email: email,
       line_items: lineItems,
-      success_url: `https://your-frontend.com/success?orderId=${userAddress.orderId}`,
-      cancel_url: `https://your-frontend.com/cancel`,
+      success_url: `https://weefashion-shopping-frontend.onrender.com/success?orderId=${userAddress.orderId}`,
+      cancel_url: `https://weefashion-shopping-frontend.onrender.com/cancel`,
     });
 
     res.json({ url: session.url });
