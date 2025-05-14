@@ -17,14 +17,14 @@ const createCheckoutSession = async (req, res) => {
       return res.status(404).json({ error: "Delivery address not found for this email." });
     }
 
-    // 2. Get cart items
+    
     const cartItems = await Cart.find({ email });
 
     if (!cartItems || cartItems.length === 0) {
       return res.status(400).json({ error: "No items in cart for this user." });
     }
 
-    // 3. Format Stripe line items
+    
     const lineItems = cartItems.map((item) => ({
       price_data: {
         currency: "inr",
@@ -32,12 +32,12 @@ const createCheckoutSession = async (req, res) => {
           name: item.title,
           images: [item.src],
         },
-        unit_amount: item.Current * 100, // Amount in paise
+        unit_amount: item.Current * 100, 
       },
       quantity: item.quantity || 1,
     }));
 
-    // 4. Create Stripe session
+   
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",

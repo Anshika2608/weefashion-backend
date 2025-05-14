@@ -18,7 +18,7 @@ const authenticate = async(req,res,next)=>{
         req.token = token
         req.rootUser = rootUser
         req.userId = rootUser._id
-        
+        req.email = rootUser.email;
         next();
 
     } catch (error) {

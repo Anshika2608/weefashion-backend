@@ -56,7 +56,29 @@ const deleteCartProduct = async (req, res) => {
         res.status(500).json({ success: false, message: "Failed to delete wishlisted product", error: err.message });
     }
 };
+const editQuantity= async (req, res) => {
+  try {
+    const { productId, quantity } = req.body;
+    const userEmail = req.user.email; 
+
+    const updatedCartItem = await Cart.findOneAndUpdate(
+      { email: userEmail, id: productId },
+      { $set: { quantity } },
+      { new: true }
+    );
+
+    if (!updatedCartItem) {
+      return res.status(404).json({ error: "Cart item not found." });
+    }
+
+    res.status(200).json(updatedCartItem);
+  } catch (error) {
+    console.error("Error updating cart item:", error);
+    res.status(500).json({ error: "Failed to update cart item." });
+  }
+};
 module.exports={getCartProduct:fetchCartProducts,
     addCartProduct,
-    deleteCartProduct 
+    deleteCartProduct ,
+    editQuantity
 }
