@@ -78,9 +78,19 @@ const editQuantity = async (req, res) => {
     res.status(500).json({ error: "Failed to update cart item." });
   }
 };
-
+const clearCart = async (req, res) => {
+  try {
+    const userEmail = req.user.email; 
+    await Cartproducts.deleteMany({ email: userEmail });
+    res.status(200).json({ success: true, message: "Cart cleared successfully." });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    res.status(500).json({ success: false, message: "Failed to clear cart." });
+  }
+};
 module.exports={getCartProduct:fetchCartProducts,
     addCartProduct,
     deleteCartProduct ,
-    editQuantity
+    editQuantity,
+    clearCart
 }
